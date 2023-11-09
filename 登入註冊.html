@@ -102,41 +102,49 @@
         function validateForm() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
+            var messageElement = document.getElementById("loginMessage");
+            var registrationMessageElement = document.getElementById("registrationMessage");
 
             if (username === "abc" && password === "abc") {
-                alert("登入成功"); // Display success message in a popup dialog
+                messageElement.textContent = "登入成功!"; // Display login success message
             } else {
-                alert("登入失敗"); // Display failure message in a popup dialog
+                messageElement.textContent = "登入失敗"; // Display login failure message
+            }
+
+            var registrationPassword = document.getElementById("password2").value;
+            if (registrationPassword.length > 3) {
+                registrationMessageElement.textContent = "註冊成功!"; // Display registration success message
+            } else {
+                registrationMessageElement.textContent = "註冊失敗"; // Display registration failure message
             }
         }
 
-
         function show_hide() {
-        var login = document.getElementById("container1");
-        var signup = document.getElementById("container2");
-        var copyright = document.getElementById("copyright");
-    
-        if (login.style.display === "none") {
-            login.style.display = "block";  //lonin出現
-            document.getElementById("username").value="";
-            document.getElementById("password").value="";
-            signup.style.display = "none";  //signup消失
-            copyright.style.margin = "200px 0px 0px 0px";
-        } else {
-            login.style.display = "none";   //login消失
-            signup.style.display = "block"; //signup出現
-            signup.style.visibility="visible";
-            copyright.style.margin = "200px 0px 0px 0px";
-        
-            document.getElementById("fullname").value="";
-            document.getElementById("username2").value="";
-            document.getElementById("password2").value="";
-            document.getElementById("comfirm_password").value="";
+            var login = document.getElementById("container1");
+            var signup = document.getElementById("container2");
+            var copyright = document.getElementById("copyright");
+
+            if (login.style.display === "none") {
+                login.style.display = "block";
+                document.getElementById("username").value="";
+                document.getElementById("password").value="";
+                signup.style.display = "none";
+                copyright.style.margin = "200px 0px 0px 0px";
+            } else {
+                login.style.display = "none";
+                signup.style.display = "block";
+                signup.style.visibility="visible";
+                copyright.style.margin = "200px 0px 0px 0px";
+
+                document.getElementById("fullname").value="";
+                document.getElementById("username2").value="";
+                document.getElementById("password2").value="";
+                document.getElementById("comfirm_password").value="";
+            }
         }
-    }
     </script>
-    <div class="system_name">
-    </div>
+
+    <div class="system_name"></div>
 
     <div class="login_page">
         <div id="container1">
@@ -148,17 +156,18 @@
                     <input type="password" id="password" name="password" placeholder="密碼" required>
                     <div class="tab"></div>
                     <input type="submit" value="登入" class="submit">
-                </form>  
+                </form>
+                <div id="loginMessage"></div>
                 <h5 onclick="show_hide()">註冊帳號</h5>
-            </div><!-- login end-->
-        </div><!-- container1 end-->
-    </div><!-- login_page end-->
+            </div>
+        </div>
+    </div>
 
     <div class="signup_page">
         <div id="container2">
             <div class="signup">  
                 <h3  style="text-align: center;">註冊 Sign Up</h3>
-                <form action="用戶管理.php">
+                <form onsubmit="event.preventDefault(); validateForm();">
                     <input type="text" id="fullname" name="fullname" placeholder="使用者全名" required>
                     <div class="tab"></div>
                     <input type="text" id="username2" name="username" placeholder="帳號" required>
@@ -169,10 +178,11 @@
                     <div class="tab"></div>            
                     <input type="submit" value="註冊" class="submit">
                 </form>  
+                <div id="registrationMessage"></div>
                 <h5 onclick="show_hide()">登入帳號</h5>
-            </div><!-- signup end-->
-        </div><!-- container2 end-->
-    </div><!-- signup_page end--> 
+            </div>
+        </div>
+    </div> 
 
   </body>
 </html>
