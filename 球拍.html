@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>球拍</title>
+    <style>/* css 變數設定 */
+        :root {
+            --color_light: rgb(233, 216, 209);
+            --color_main: rgb(159, 146, 138);
+            --color_dark: rgb(135, 151, 176);
+        }
+        
+        /* * { */
+        /* color: red; */
+        /* border: 1px solid black; */
+        /* } */
+        
+        
+        body {
+            /* 使用微軟正黑體 */
+            font-family: 'Microsoft Jhenghei';
+        }
+        
+        /*============ cards 頁面 ============*/
+        /* 一群卡片的容器 */
+        .cards {
+            /* 讓此元素變成flex元素 */
+            /* flex元素內的item預設會橫著排列 */
+            display: inline-block;
+            /* 讓flex內的item置中排 center */
+            /* 靠右 flex-end */
+            justify-content: center;
+            /* 如果空間不夠item自動換行 */
+            flex-wrap: wrap;
+        }
+        
+        /* 一張卡片 */
+        .card {
+            width: 320px;
+            /* padding: 20px 20px; */
+            /* box-shadow: x值 y值 模糊值 顏色; */
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            /* 讓內部超出邊界的內容隱藏 */
+            overflow: hidden;
+            margin: 30px 15px;
+        }
+        
+        .card-img {
+            width: 100%;
+            /* 讓此元素變成區塊元素 */
+            display: block;
+        }
+        
+        .card-body {
+            padding: 15px 15px;
+        }
+        
+        .card-title {
+            margin-top: 0px;
+            margin-bottom: 2px;
+        }
+        
+        .card-text {
+            margin-top: 2px;
+            margin-bottom: 0px;
+        }
+        
+        
+        
+        /*============ table 頁面 ============*/
+        
+        table,
+        td,
+        th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        td,
+        th {
+            padding: 8px 20px;
+        }
+        
+        .price {
+            text-align: right;
+        }
+        
+        .price:before {
+            content: "$ ";
+        }
+        
+        .price:after {
+            content: " NTD";
+        }
+        
+        /*============ form 頁面 ============*/
+        .form-box {
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+            overflow: hidden;
+        }
+        
+        .form-header {
+            background-color: #33c07e;
+            color: white;
+            padding: 15px 15px;
+        }
+        
+        .form-header-title {
+            font-size: 24px;
+            margin: 0;
+        }
+        
+        .form-body {
+            padding: 20px 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-control {
+            font-size: 16px;
+            color: #6e7072;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        
+        .productCategory {
+            display: block;
+            width: 100%;
+            padding: 6px 6px;
+            line-height: 1.5;
+            color: #6e7072;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        
+        .productNumber {
+            padding: 0px 6px;
+            margin-right: 18 px;
+            display: inline-block;
+            line-height: 1.7;
+            width: 20%;
+        }
+        
+        .submit-btn {
+            display: inline-block;
+            background-color: var(--color_main);
+            border: 1px solid var(--color_main);
+            color: white;
+            font-size: 14px;
+            padding: 5px 5px;
+            border-radius: 4px;
+        }
+        /* css 變數設定 */
+        :root {
+            --color_white: rgba(247, 247, 247, 1);
+            --color_mask: rgba(247, 247, 247, 0.5);
+            --color_light: rgb(233, 216, 209);
+            --color_main: rgb(159, 146, 138);
+            --color_dark: rgb(135, 151, 176);
+        }
+        
+        /* ----------- */
+        .pictures {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 500px;
+            background-color: var(--color_white);
+            border: solid 1px grey;
+        }
+        
+        .pictureBack {
+            position: absolute;
+            width: 25%;
+            height: 480px;
+            border: solid 10px var(--color_white);
+        }
+        
+        .pictureLeft {
+            left: 0px;
+        }
+        
+        .pictureRight {
+            right: 0px;
+        }
+        
+        .pictureCentral {
+            width: 45%;
+            height: 480px;
+            border: solid 10px var(--color_white);
+            margin: 0px 27%;
+        }
+        
+        .picture {
+            position: absolute;
+            overflow: hidden;
+        }
+        
+        .mask {
+            width: 100%;
+            height: 100%;
+            /* border: solid 2px grey; */
+            background-color: var(--color_mask);
+        }
+        
+        .maskMain {
+            width: 100%;
+            height: 100%;
+            /* border: solid 2px grey; */
+            background-color: rgba(247, 247, 247, 0.1);
+        
+        }
+        
+        .Btn {
+            position: absolute;
+            width: 40px;
+            height: 100px;
+            background-color: var(--color_white);
+            top: 200px;
+            border: solid 0.5px grey;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .leftBtn {
+            left: 24.5%;
+        }
+        
+        .rightBtn {
+            right: 24%;
+        }
+        /* css 變數設定 */
+        :root {
+            --color_light: rgb(233, 216, 209);
+            --color_main: rgb(159, 146, 138);
+            --color_dark: rgb(135, 151, 176);
+        }
+        
+        /* ----------- */
+        * {
+            position: relative;
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        h1 {
+            margin: 8px;
+        }
+        
+        /* ----------------------------------- */
+        /* -Navbar---------------------------------- */
+        nav {
+            position: fixed;
+            width: 100%;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, .2);
+            background-color: var(--color_main);
+            padding: 15px;
+        }
+        
+        nav a {
+        
+            color: inherit;
+            /* 移除超連結顏色 */
+            text-decoration: none;
+            /* 移除超連結底線 */
+            font-size: 12pt;
+            text-decoration: none;
+            /* 移除超連結底線 */
+            padding: 15px;
+        }
+        
+        nav>ul {
+            /* list-style: none; */
+            /* 移除項目符號 */
+            /* background-color: rgb(230, 230, 230); */
+            list-style: none;
+            /* 移除項目符號 */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            /* 的效果，左右各留中間平均寬度的一半 */
+            color: rgba(247, 247, 247, 1);
+        }
+        
+        nav a:hover {
+            background-color: rgb(247, 247, 247);
+            color: var(--color_main);
+            /* box-shadow: 0px 5px 10px rgba(0, 0, 0, .2); */
+        
+        }
+        
+        .nav-icon {
+            border: solid 2px grey;
+            color: grey;
+            border-radius: 70%;
+        }
+        
+        /* - Navbar end---------------------------------- */
+        
+        #header {
+            padding: 100px 0px 10px;
+            margin: 0px;
+        }
+        h1{
+            text-align: center;
+        }
+        </style>
+</head>
+<body>
+
+<!-- pictures end -->
+
+<!-- productSection -->
+<section id="productSection" class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-5" style="font-size: 36px;">產品列表</h1>
+        <div id="productRow" class="row"></div>
+    </div>
+</section>
+
+<!-- modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">購物車</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table table-border">
+                    <thead>
+                        <tr>
+                            <th>產品名稱</th>
+                            <th class="text-right">單價</th>
+                            <th class="text-right">數量</th>
+                            <th class="text-right">總計</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartTableBody"></tbody>
+                    <tfoot id="cartTableFoot"></tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="emptyCartBtn">清空購物車</button>
+                <button id="checkoutBtn" class="btn btn-success btn-lg btn-block mt-3">結帳</button>
+            </div>
+        </div>
+    </div>
+<!-- modal -->
+<!-- jquery.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- popper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<!-- bootstrap.js -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+    crossorigin = "anonymous" ></script>
+<!-- sweetalert.js -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<!-- products.js -->
+<script src="./js/products.js"></script>
+<!-- main.js -->
+<!-- <script src="./js/cart.js"></script> -->
+<script>
+    // 用來產生購物車的建構式
+    function Cart() {
+        // localStorage key
+        this.key = 'example-cart';
+        // 購物車的資料
+        this.data = [];
+        // 初始化購物車
+        this.initCart = function () {
+            // 取得user在localStorage裡的資訊
+            const storageData = localStorage.getItem(this.key);
+            // 如果有資料將資料轉回物件，如果無資料預設空陣列
+            this.data = storageData ? JSON.parse(storageData) : [];
+            // 顯示資料
+            this.render();
+        }
+        // 傳入商品id與數量並新增商品至購物車
+        this.addItem = function (pid, amount) {
+            // 透過pid尋回product的資料
+            const product = products.find(function (p) {
+                // 回傳一個檢索的邏輯
+                // 如果產品的id等於是使用者送出表單的pid
+                return p.id === pid
+            });
+            // 產生購物車的新項目
+            const newItem = {
+                pid: product.id,
+                title: product.title,
+                price: product.price,
+                amount: amount,
+                // 取得現在的時間戳記
+                createdAt: new Date().getTime()
+            };
+            // 把新項目加到購物車的資料內
+            this.data.push(newItem);
+            // 更新storage資料
+            this.updateDataToStorage();
+            // 渲染畫面
+            this.render();
+            // 把成功訊息顯示
+            Swal.fire({
+                title: '已加入購物車',
+                text: `${newItem.title}已加入${newItem.amount}項至購物車`,
+                type: 'success'
+            });
+        }
+        // 至購物車刪除於購物車內指定索引商品
+        this.deleteItem = function (i) {
+            // 在this.data裡從索引i刪除1筆資料
+            this.data.splice(i, 1);
+            this.updateDataToStorage();
+            this.render();
+        }
+        // 清空購物車
+        this.emptyCart = function () {
+            this.data = [];
+            this.updateDataToStorage();
+            this.render();
+        }
+        // 更新資料到localStorage
+        this.updateDataToStorage = function () {
+            // 把目前的資料轉成字串
+            const storageData = JSON.stringify(this.data);
+            // 更新到localStorage
+            localStorage.setItem(this.key, storageData);
+        }
+        // 渲染購物車
+        this.render = function () {
+            const tbody = '#cartTableBody',
+                tfoot = '#cartTableFoot',
+                cartNavLink = '#cartNavLink',
+                cartLength = this.data.length;
+            const navLinkHTML = cartLength > 0 ? `
+                購物車 <span class="badge badge-primary">${cartLength}</span>
+            ` : '購物車';
+            // document.getElementById('cartNavLink').innerHTML = navLinkHTML;
+            $(cartNavLink).html(navLinkHTML);
+            // 把舊資料清空
+            $(tbody).empty();
+            $(tfoot).empty();
+            // 預設總金額是0
+            let summation = 0;
+            // 再把資料取出顯示到畫面上
+            this.data.forEach(function (item, i) {
+                $(tbody).append(`<tr>
+                    <td>
+                        <button data-index="${i}" class="btn btn-danger btn-sm delete-btn">&times;</button>
+                        ${item.title}
+                    </td>
+                    <td class="text-right">$ ${item.price}</td>
+                    <td class="text-right">${item.amount}</td>
+                    <td class="text-right">$ ${item.price * item.amount}</td>
+                </tr>`);
+                // 把數量與單價相乘並加總至總數
+                summation += item.price * item.amount;
+            });
+            // 把總金額顯示
+            $(tfoot).append(`<tr>
+                <th>合計</th>
+                <td class="text-right" colspan="3">$ ${summation}</td>
+            </tr>`);
+        }
+    }
+    
+    // 產生一個購物車的實例
+    const cart = new Cart();
+    // 初始化購物車
+    cart.initCart();
+    
+    // 為每個在#productRow裡的.product-form註冊表單事件
+    $('#productRow').delegate('.product-form', 'submit', function (event) {
+        event.preventDefault();
+        // 產品的id
+        const pid = $(this).attr('data-id');
+        // user填寫的數量
+        const amount = parseInt($(`#productAmount${pid}`).val());
+        // 把產品加到購物車
+        cart.addItem(pid, amount);
+    });
+    
+    $('#emptyCartBtn').click(function () {
+        // 把購物車資料清空
+        cart.emptyCart();
+    });
+    
+     $('.delete-btn').click(function () {
+         console.log(this);
+     });
+    $('#cartTableBody').delegate('.delete-btn', 'click', function () {
+        console.log(this);
+        const itemIndex = parseInt($(this).attr('data-index'));
+        console.log(itemIndex);
+        // 移除指定的資料
+        cart.deleteItem(itemIndex);
+    })
+    
+    const products = [
+        {
+            id: '1',
+            title: 'MIZUNO美津濃 少年軟式棒球 金屬棒',
+            price: 3180,
+            img: 'https://down-tw.img.susercontent.com/file/sg-11134201-22120-xrfrmnpexzkv21',
+            isAvailable: true
+        },
+        {
+            id: '2',
+            title: '神速 ARS-100X H 羽球拍',
+            price: 4550,
+            img: 'https://down-tw.img.susercontent.com/file/tw-11134207-23020-jwgpe8r1w9mv07',
+            isAvailable: true
+        },
+        {
+            id: '3',
+            title: 'Wilson Six One 網球拍',
+            price: 2980,
+            img: 'https://img2.biggo.com/sWpmkMQxDODiH4sIJcCn5QE3xzPLnOG9huLkP0FeFPu0/https://diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/7177130/0/638214168376200000?v=1',
+            isAvailable: true
+        },
+        {
+            id: '4',
+            title: 'Donic black power 桌球拍',
+            price: 2980,
+            img: 'https://down-tw.img.susercontent.com/file/87d39489fbc6b816ea47546d3973b3f6',
+            isAvailable: true
+        },
+        {
+            id: '5',
+            title: '美津濃MIZUNO CORPORATION) 高爾夫球桿',
+            price: 33750,
+            img: 'https://products.mizuno.tw/product_images/list/SH_5KTFB37407.jpg',
+            isAvailable: true
+        },
+        {
+            id: '6',
+            title: '全揚撞球 美國PERI EXA-03撞球桿',
+            price: 4200,
+            img: 'https://www.cycues.com.tw/wp-content/uploads/sites/108/2023/05/22184.jpg',
+            isAvailable: true
+        }
+    ];
+    
+    // 渲染商品
+    function renderProducts() {
+        // 把products的資料取出
+        products.forEach(function (product) {
+            // 選到id叫做productRow的元素，並在其內部放入...
+            // document.getElementById('productRow').innerHTML += `<div>...</div>`
+            $('#productRow').append(`<div class="cards col-md-4">
+                <div class="card">
+                    <img class="card-img" src="${product.img}" class="card-img-top">
+                    <form data-id="${product.id}" class="card-body product-form">
+                        <h5 class="card-title">${product.title}</h5>
+                        <p class="card-text">NT$ ${product.price} </p>
+                        <br>
+                        <input id="productAmount${product.id}" min="1" max="20" class="form-control productNumber" type="number" placeholder="數量" required>
+                        <button type="submit" class="btn submit-btn btn-primary btn-block mt-2">新增至購物車</button>
+                    </form>
+                </div>
+            </div>`);
+        });
+    }
+    
+    renderProducts();
+    // products.title;</script>
+</body>
+</html>
