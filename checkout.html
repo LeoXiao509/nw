@@ -1,0 +1,484 @@
+<!-- checkout.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add your head content here -->
+    <title>結帳</title>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    /* Add a hover effect for buttons */
+    #confirmPaymentBtn:hover {
+        background-color: #3892c3;
+        color: #fff;
+        cursor: pointer;
+    }
+
+
+    #checkoutDetails {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 50%;
+}
+
+
+        table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        border: 1px solid #000000;
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #216d96;
+        color: #fff;
+    }
+
+    #paymentMethodSelection {
+    text-align: center;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    }
+
+    #finish{
+        text-align: center;
+        margin-right: 10px;
+        height: 40px;
+        width: 120px;
+        border: 1px solid #3892c3;
+        border-radius: 4px;
+        background-color: #3892c3;
+        color: #fff;
+    }
+
+    #paymentMethod, #confirmPaymentBtn {
+        text-align: center;
+        margin-right: 10px;
+        height: 40px;
+        width: 120px;
+        border: 1px solid #3892c3;
+        border-radius: 4px;
+        background-color: #3892c3;
+        color: #fff;
+    }
+
+    /* Style the select dropdown arrow */
+    #paymentMethod::after {
+        content: '\25BC'; /* Unicode character for down arrow */
+        font-size: 12px;
+        margin-left: 5px;
+    }
+
+    #container1{
+            margin: 50px;
+            padding: 20px;
+            width: 350px;
+            height: 120px;
+            background-color: white;
+            border-radius: 5px;
+            
+            /*定位對齊*/  
+            margin: auto;
+            top: 100px;
+            text-align:center;  
+        }
+        input{
+            padding: 5px;
+            border: none; 
+            border:solid 1px #ccc;
+            border-radius: 5px;
+            width: 350px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>結帳頁面</h1>
+
+<div id="checkoutDetails">
+    <!-- Display the checkout details here -->
+</div>
+<div id="shippingMethodSelection" style="text-align: center;">
+    <h3>選擇寄送方式:</h3>
+    <select id="shippingMethod">
+        <option value="standard">標準寄送</option>
+        <option value="express">快遞寄送</option>
+        <option value="free">免費寄送</option>
+    </select>
+</div>
+<div id="orderNotes" style="text-align: center;">
+    <h3>備註:</h3>
+    <textarea id="notes" rows="4" placeholder="在這裡輸入您的備註"></textarea>
+</div>
+<div id="container1">
+    <form method="post" name="sale">
+        <input type="text" id="name" name="姓名" placeholder="姓名" required>
+        <div class="tab"></div>
+        <input type="text" id="phone" name="電話" placeholder="電話" required>
+        <div class="tab"></div>
+        <input type="text" id="email" name="email" placeholder="Email" required>
+        <div class="tab"></div>
+        <input type="text" id="address" name="寄送地址" placeholder="寄送地址" required>
+        <div id="creditCardDetails" style="display: none; text-align: center;">
+            <label for="cardNumber" style="font-weight: bolder;">卡片詳情</label><br>
+            <input type="text" id="cardNumber" name="信用卡卡號" placeholder="請輸入信用卡卡號">
+            <br>
+            <input type="text" id="expiryDate" name="到期日" placeholder="到期日(MM/YY)">
+            <br>
+            <input type="text" id="safe" name="驗證碼" placeholder="安全驗證碼">
+            <br>
+            <input type="text" id="pname" name="持卡人名字" placeholder="持卡人名字"><p></p> 
+            <button id="finish" name="submit" onclick="productBtn()">確認</button>
+        </div>
+        <div id="paypalDetails" style="display: none; text-align: center;">
+            <!-- Add PayPal-specific details here -->
+            <p>PayPal相關資訊</p>
+            <input type="text" name="電子郵件" placeholder="電子郵件地址">
+            <br>
+            <input type="text" name="密碼" placeholder="密碼"> <p></p>            
+            <button id="finish" name="submit">完成訂單</button>
+        </div>
+        <div id="cashDetails" style="display: none;">
+    </form>
+</div>
+
+<div id="paymentMethodSelection">
+    <h3>選擇付款方式:</h3>
+    <select id="paymentMethod">
+        <option value="creditCard">信用卡</option>
+        <option value="paypal">PayPal</option>
+        <!-- Add more payment options as needed -->
+    </select>
+    <button  id="confirmPaymentBtn" class="btn btn-success">確認付款</button>
+</div>
+<div id="paymentDetails">
+    
+    </div>
+</div>
+<script>
+    function addDataToSheet(data) {
+    // 請替換成你的 Google Sheets 文件的 ID
+    var spreadsheetId = '17Jx3RAGkvuGv29tPIZjTSd1xL7FqlDvubENRGPAE-sU';
+
+    // 請替換成你的 Google Sheets 文件中的工作表名稱
+    var sheetName = 'Sheet1';
+
+    // 打開 Google Sheets 文件
+    var spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+    const cartDataString = JSON.stringify(cartData);
+    // 獲取指定的工作表
+    var sheet = spreadsheet.getSheetByName(sheetName);
+
+    // 將資料添加到工作表的最後一行
+    sheet.appendRow([data.title, data.price, data.amount]);
+
+    Logger.log('Data added to Google Sheets successfully.');
+    }
+    const cartData = [
+    { title: '籃球', price: 450, amount: 1 },
+    { title: '足球', price: 480, amount: 1 },
+    // ... 其他商品
+    ];
+    fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `cart=${encodeURIComponent(cartDataString)}`,
+    })
+        .then(response => response.json())
+        .then(data => {
+            // 在這裡處理 Google Apps Script 返回的數據
+            console.log('Google Apps Script 執行成功:', data);
+        })
+        .catch(error => {
+            // 在這裡處理錯誤情況
+            console.error('發生錯誤:', error);
+        });
+    Promise.all(cartData.map(item => google.script.run.addDataToSheet(item)))
+    .then(() => {
+        console.log('All data added to Google Sheets successfully.');
+    })
+    .catch(error => {
+        console.error('Error adding data to Google Sheets:', error);
+    }
+    );  
+
+    
+    /*   
+    function getValues(){
+        var name = document.getElementById("name");
+        var phone = document.getElementById("phone");
+        var email = document.getElementById("email");
+        var address = document.getElementById("address");     
+        var cardNumber = document.getElementById("cardNumber");
+        var expiryDate = document.getElementById("expiryDate");
+        var safe = document.getElementById("safe");
+        var pname = document.getElementById("pname");
+        var paypalemail = document.getElementById("paypalemail");
+        var paypalpassword = document.getElementById("paypalpassword");
+
+        var rowData={
+            name :name.value,
+            phone :phone.value,
+            email :email.value,
+            address :address.value,
+            cardNumber :cardNumber.value,
+            expiryDate :expiryDate.value,
+            safe :safe.value,
+            pname :pname.value,
+            paypalemail :paypalemail.value,
+            paypalpassword :paypalpassword.value
+        };
+        
+        google.script.run.addData(rowData);
+        document.getElementById("saleForm").reset();
+        document.getElementById("paymentForm").reset();
+        alert("完成!");
+    }
+    document.getElementById("confirmPaymentBtn").addEventListener("click",getValues);
+    */
+</script>
+<script>
+    document.getElementById('confirmPaymentBtn').addEventListener('click', function () {
+        const currentDateTime = new Date().toLocaleString();
+        // 檢查姓名、電話、Email、寄送地址是否有空值
+        var name = document.getElementById('name').value;
+        var phone = document.getElementById('phone').value;
+        var email = document.getElementById('email').value;
+        var address = document.getElementById('address').value;
+
+        if (!name || !phone || !email || !address) {
+            alert('請填寫所有必填項目。');
+            return;
+        }
+
+        // 繼續處理付款流程
+        const selectedPaymentMethod = document.getElementById('paymentMethod').value;
+        const selectedShippingMethod = document.getElementById('shippingMethod').value;
+        const orderNotes = document.getElementById('notes').value;
+
+        // ... （您現有的付款處理邏輯）
+
+        // 隱藏所有付款詳細信息 div
+        document.getElementById('creditCardDetails').style.display = 'none';
+        document.getElementById('paypalDetails').style.display = 'none';
+        document.getElementById('cashDetails').style.display = 'none';
+
+        if (orderNotes.trim() !== '') {
+            alert('備註: ' + orderNotes);
+        }
+
+            switch (selectedPaymentMethod) {
+                case 'creditCard':
+                document.getElementById('creditCardDetails').style.display = 'block';
+                break;
+            case 'paypal':
+                document.getElementById('paypalDetails').style.display = 'block';
+                break;
+            case 'cash':
+                document.getElementById('cashDetails').style.display = 'block';
+                break;
+            default:
+                break;
+        }
+    });
+    
+    function displayCheckoutDetails(cartData) {
+    const shippingMethodSelection = document.getElementById('shippingMethodSelection');
+    const shippingSelect = document.createElement('select');
+    shippingSelect.id = 'shippingMethod';
+    const shippingOptions = ['標準寄送', '快遞寄送', '免費寄送'];
+
+    shippingOptions.forEach(optionText => {
+        const option = document.createElement('option');
+        option.value = optionText.toLowerCase();
+        option.textContent = optionText;
+        shippingSelect.appendChild(option);
+    });
+
+    shippingMethodSelection.appendChild(document.createElement('br'));
+    shippingMethodSelection.appendChild(shippingSelect);
+    confirmPaymentBtn
+}
+
+    // Retrieve the cart data from the query parameter
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const cartDataString = urlParams.get('cart');
+    
+    if (cartDataString) {
+        const cartData = JSON.parse(decodeURIComponent(cartDataString));
+
+        displayCheckoutDetails(cartData);
+    } else {
+        console.error('Cart data not found.');
+    }
+
+    function displayCheckoutDetails(cartData) {
+        const checkoutDetails = document.getElementById('checkoutDetails');
+
+        // Create a table to display the checkout details
+        const table = document.createElement('table');
+        table.border = '1';
+
+        // Create table headers
+        const headerRow = table.insertRow();
+        const headers = ['產品名稱', '單價', '數量', '總計'];
+        headers.forEach(headerText => {
+            const header = document.createElement('th');
+            header.innerHTML = headerText;
+            headerRow.appendChild(header);
+        });
+
+        // Populate the table with cart items
+        cartData.forEach(item => {
+            const row = table.insertRow();
+            const { title, price, amount } = item;
+            const total = price * amount;
+
+            // Create cells for each item property
+            const cellData = [title, `$${price}`, amount, `$${total}`];
+
+            cellData.forEach(cellText => {
+                const cell = row.insertCell();
+                cell.innerHTML = cellText;
+            });
+        });
+
+        // Display total amount
+        const totalRow = table.insertRow();
+        const totalCell = totalRow.insertCell();
+        totalCell.colSpan = 4;
+        totalCell.innerHTML = `<b>總計: $${calculateTotal(cartData)}</b>`;
+
+        // Append the table to the checkout details div
+        checkoutDetails.appendChild(table);
+    }
+
+    function calculateTotal(cartData) {
+        return cartData.reduce((total, item) => total + item.price * item.amount, 0);
+    }
+    
+    document.getElementById('confirmPaymentBtn').addEventListener('click', function () {
+    const selectedPaymentMethod = document.getElementById('paymentMethod').value;
+    const selectedShippingMethod = document.getElementById('shippingMethod').value;
+    const orderNotes = document.getElementById('notes').value;
+
+    switch (selectedPaymentMethod) {
+        case 'creditCard':
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+
+            // 檢查信用卡卡號和有效期限是否有效
+            if (cardNumber.trim() !== '' && expiryDate.trim() !== '') {
+                // 如果有效，顯示警告
+                alert('訂單已成立！感謝您的購物。');
+                window.location.href = 'index.html';
+                // 在這裡可以將訂單信息提交到後端服務器或進行其他相應的處理
+            } else {
+                // 如果信息不完整，提示用戶輸入完整的信用卡信息
+                alert('請輸入完整的信用卡信息。');
+            }
+            break;
+        case 'paypal':
+            case 'paypal':
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // 檢查信用卡卡號和有效期限是否有效
+            if (email.trim() !== '' && password.trim() !== '') {
+                // 如果有效，顯示警告
+                alert('訂單已成立！感謝您的購物。');
+                window.location.href = 'index.html';
+                // 在這裡可以將訂單信息提交到後端服務器或進行其他相應的處理
+            } else {
+                // 如果信息不完整，提示用戶輸入完整的信用卡信息
+                alert('請輸入完整的PayPal信息。');
+            }
+            break;
+            
+    }
+
+    // Hide all payment details divs
+    document.getElementById('creditCardDetails').style.display = 'none';
+    document.getElementById('paypalDetails').style.display = 'none';
+    document.getElementById('cashDetails').style.display = 'none';
+    if (orderNotes.trim() !== '') {
+        alert('備註: ' + orderNotes);
+    }
+    switch (selectedPaymentMethod) {
+        case 'creditCard':
+            document.getElementById('creditCardDetails').style.display = 'block';
+            break;
+        case 'paypal':
+            document.getElementById('paypalDetails').style.display = 'block';
+            break;
+        case 'cash':
+            document.getElementById('cashDetails').style.display = 'block';
+            break;
+        default:
+            break;
+    }
+
+    
+    
+
+});
+
+document.getElementById('purchaseForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var form = event.target;
+        var formData = new FormData(form);
+
+        fetch('https://script.google.com/macros/s/AKfycbzke1R0GPQT4t7w9iA93uOxNPZ-qIHHzd1sHvH23KS_2R9h9AAPOfnFDtNqX6N65-wKdw/exec', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (response.ok) {
+            alert('資料成功上傳至 Google Sheets');
+          } else {
+            alert('資料上傳失敗');
+          }
+        })
+        .catch(error => console.error('錯誤!', error.message));
+      });
+</script>
+<script type="text/javascript">
+     const scriptURL = 'https://script.google.com/macros/s/AKfycbzke1R0GPQT4t7w9iA93uOxNPZ-qIHHzd1sHvH23KS_2R9h9AAPOfnFDtNqX6N65-wKdw/exec';
+     const form = document.forms['sale']
+     
+          form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+              .then(response => alert("成功下單!"))
+              .catch(error => console.error('Error!', error.message))
+    })
+    google.script.run.addData(rowData);
+    
+</script>
+</body>
+</html>
