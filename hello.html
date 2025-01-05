@@ -8,17 +8,16 @@
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px; /* 增加內邊距，避免貼邊 */
             background: linear-gradient(to right, #ffd1dc, #ffe4e1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
         }
 
         .card-container {
             perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px; /* 增加卡片之間的間距 */
         }
 
         .card {
