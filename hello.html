@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>☆Happy New Year☆</title>
     <style>
-         body {
+        body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
@@ -14,71 +14,116 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
+
+        .card-container {
+            perspective: 1000px;
+        }
+
         .card {
-            width: 350px;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            text-align: center;
+            width: 300px;
+            height: 400px;
             position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
         }
-        .card:before {
-            content: '';
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
-            background: url('https://cdn-icons-png.flaticon.com/512/4206/4206411.png') no-repeat center;
-            background-size: cover;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: #fff;
         }
-        .title {
+
+        .card-front {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #ff6f91, #ffe4e1);
+            color: #fff;
+        }
+
+        .card-front .title {
             font-size: 24px;
-            color: #ff6f91;
             font-weight: bold;
-            margin-top: 80px;
+            margin-bottom: 15px;
         }
-        .message {
-            font-size: 16px;
-            color: #333;
-            margin: 15px 0;
-        }
-        .button {
-            display: inline-block;
+
+        .open-button {
             padding: 10px 20px;
             font-size: 16px;
             color: #fff;
-            background: #ff6f91;
+            background: #ff3e61;
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            text-decoration: none;
             transition: background 0.3s ease;
         }
-        .button:hover {
-            background: #ff3e61;
+
+        .open-button:hover {
+            background: #ff1a42;
         }
-        .footer {
-            margin-top: 20px;
+
+        .card-back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-back img {
+            width: 80%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card-back .title {
+            font-size: 20px;
+            color: #ff6f91;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-back .message {
             font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .card-back .footer {
+            margin-top: 20px;
+            font-size: 12px;
             color: #999;
         }
 
         @media (max-width: 600px) {
             .card {
-                padding: 15px;
-                font-size: 14px;
+                width: 280px;
+                height: 380px;
             }
 
-            .card img {
-                width: 80px;
-                height: 80px;
+            .card-back img {
+                width: 90%;
+            }
+
+            .card-back .message {
+                font-size: 13px;
             }
         }
-
     </style>
 </head>
 <body>
@@ -93,9 +138,12 @@
             <div class="card-back">
                 <img src="./S__24567810.jpg" alt="朋友的照片">
                 <div class="title">新年快樂！</div>
-                <div class="message">希望你在新的一年可以過得更順利，一起約出去玩的時候我們都蠻ㄎ一ㄤ的，
-                    但是相處起來我是覺得蠻自在的(?，也感謝你主動開話題，讓我這個不知道如何表達的人可以聽著你訴說，
-                    如果有遇到什麼事情也可以儘管說出來，我都會聽的歐!!然後去更多地方吃好&玩好~
+                <div class="message">
+                    希望你在新的一年可以過得更順利，一起約出去玩的時候我們都蠻ㄎ一ㄤ的，<br>
+                    但是相處起來我是覺得蠻自在的(?，也感謝你主動開話題，<br>
+                    讓我這個不知道如何表達的人可以聽著你訴說。<br>
+                    如果有遇到什麼事情也可以儘管說出來，我都會聽的歐!!<br>
+                    然後去更多地方吃好 & 玩好~
                 </div>
                 <div class="footer">— By 欣妤🐟</div>
             </div>
